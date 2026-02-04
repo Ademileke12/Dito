@@ -18,6 +18,7 @@
     "figlet": "^1.10.0",
     "glob": "^7.2.3",
     "ignore": "^7.0.5",
+    "inquirer": "^8.2.7",
     "ora": "^5.4.1"
   },
   "devDependencies": {

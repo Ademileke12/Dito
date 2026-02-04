@@ -126,4 +126,61 @@ program
         }
     });
 
-program.parse(process.argv);
+// ... existing imports ...
+const inquirer = require('inquirer');
+
+// ... existing code ...
+
+// Check if no arguments provided, launch interactive menu
+if (!process.argv.slice(2).length) {
+    (async () => {
+        console.log(chalk.green(figlet.textSync('D I T O', { horizontalLayout: 'full' })));
+        console.log(chalk.cyan('Welcome to Dito CLI - The Vibe Coding Auditor\n'));
+
+        const { action } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'action',
+                message: 'What would you like to do?',
+                choices: [
+                    { name: '🔮 Analyze a Project', value: 'analyze' },
+                    { name: '🐛 Debug a specific File', value: 'debug' },
+                    { name: '🚪 Exit', value: 'exit' }
+                ]
+            }
+        ]);
+
+        if (action === 'exit') {
+            console.log('Bye! 👋');
+            process.exit(0);
+        }
+
+        if (action === 'analyze') {
+            const { dir } = await inquirer.prompt([{
+                type: 'input',
+                name: 'dir',
+                message: 'Enter project directory path:',
+                default: './'
+            }]);
+            // Re-run program with analyze command
+            await program.parseAsync(['node', 'dito', 'analyze', dir]);
+        }
+
+        if (action === 'debug') {
+            const { file } = await inquirer.prompt([{
+                type: 'input',
+                name: 'file',
+                message: 'Enter file path:',
+            }]);
+            const { error } = await inquirer.prompt([{
+                type: 'input',
+                name: 'error',
+                message: 'Describe the bug (optional):',
+            }]);
+
+            await program.parseAsync(['node', 'dito', 'debug', file, error]);
+        }
+    })();
+} else {
+    program.parse(process.argv);
+}

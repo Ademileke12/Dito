@@ -50,14 +50,23 @@
 3.  **Link Command** (Optional):
     ```bash
     npm link
+    # If successful, you can just run 'dito'
+    # If you get a permission error, try: sudo npm link
     ```
 
 ---
 
 ## 🎮 Usage
 
-### Analyze a Project
-Run the auditor on any directory. No login or API keys required!
+### 🔮 Interactive Mode (New in V2)
+Simply run `dito` without arguments to launch the interactive menu:
+```bash
+dito
+```
+It will guide you through Analyzing or Debugging.
+
+### Command Line Usage
+**Analyze a Project**
 ```bash
 dito analyze ./path/to/my-project
 ```
