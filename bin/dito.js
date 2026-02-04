@@ -56,7 +56,7 @@ program
             spinner.succeed(`Found ${files.length} files.`);
 
             // 2. Analyze with AI
-            spinner.start('Consulting DeepSeek AI (via Xroute)...');
+            spinner.start('Consulting OpenAI GPT-5 (via Xroute)...');
 
             let fullPrompt = `${ANALYSIS_PROMPT}\n\n${TEST_GENERATION_PROMPT}`;
             if (config.strictness === 'chill') {

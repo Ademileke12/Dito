@@ -20,10 +20,10 @@ function getApiKey() {
 }
 
 const API_KEY = getApiKey();
-const API_URL = 'https://api.xroute.ai/deepseek/v1/chat/completions';
+const API_URL = 'https://api.xroute.ai/openai/v1/chat/completions';
 
 /**
- * Sends the project context to DeepSeek AI via Xroute
+ * Sends the project context to OpenAI GPT-5 via Xroute
  * @param {Array<{path: string, content: string}>} files - The project files
  * @param {string} prompt - The specific analysis prompt
  * @returns {Promise<string>} - The AI's response
@@ -31,7 +31,7 @@ const API_URL = 'https://api.xroute.ai/deepseek/v1/chat/completions';
 async function analyzeWithGrok(files, prompt) {
     if (process.env.MOCK_AI) {
         console.log(chalk.yellow("⚠️  Using MOCK AI Response"));
-        return `# MOCK DeepSeek Report\n\n## Grade: F\n\nCritical Issue: SQL Injection detected.`;
+        return `# MOCK GPT-5 Report\n\n## Grade: F\n\nCritical Issue: SQL Injection detected.`;
     }
 
     // Construct context
@@ -53,7 +53,7 @@ async function analyzeWithGrok(files, prompt) {
 
     try {
         const response = await axios.post(API_URL, {
-            model: 'deepseek-v3-2-251201',
+            model: 'gpt-5',
             messages: messages,
             stream: false // Keeping stream false for simpler CLI handling
         }, {

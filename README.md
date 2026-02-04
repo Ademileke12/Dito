@@ -5,7 +5,7 @@
 **The AI-Powered "Vibe Coding" Auditor**
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![Powered By](https://img.shields.io/badge/Powered%20By-DeepSeek%20(Xroute)-blue)](https://deepseek.com)
+[![Powered By](https://img.shields.io/badge/Powered%20By-OpenAI%20GPT--5-green)](https://openai.com)
 [![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen)]()
 
 </div>
