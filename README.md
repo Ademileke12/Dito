@@ -38,8 +38,8 @@
 ### Setup
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/ditto.git
-    cd ditto
+    git clone https://github.com/Ademileke12/Dito.git
+    cd Dito
     ```
 
 2.  **Install Dependencies**:
@@ -47,11 +47,16 @@
     npm install
     ```
 
-3.  **Link Command** (Optional - to use `dito` globally):
+3.  **Make it globally available** (Optional):
     ```bash
     sudo npm link
     ```
     After this, you can run `dito` from anywhere!
+    
+    *If you prefer not to install globally, you can always use:*
+    ```bash
+    node bin/dito.js
+    ```
 
 ---
 
