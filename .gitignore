@@ -1,0 +1,10 @@
+node_modules
+.env
+.DS_Store
+*.log
+dito-test-project/dito-report.md
+dito-test-project/dito_generated_tests.js
+dito-test-project/dito-fixes.md
+*.bak
+tests/test-generator-env/
+coverage/
