@@ -47,12 +47,11 @@
     npm install
     ```
 
-3.  **Link Command** (Optional):
+3.  **Link Command** (Optional - to use `dito` globally):
     ```bash
-    npm link
-    # If successful, you can just run 'dito'
-    # If you get a permission error, try: sudo npm link
+    sudo npm link
     ```
+    After this, you can run `dito` from anywhere!
 
 ---
 
