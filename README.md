@@ -309,17 +309,6 @@ if (!req.body || !req.body.amount) {
 }
 ```
 
-### Example 3: Use Mock Mode (no API calls)
-
-```bash
-MOCK_AI=true dito analyze ./test-project
-```
-
-Useful for:
-- Testing Dito's workflow
-- Demos without API costs
-- Offline development
-
 ---
 
 ## 🧪 Testing Dito
