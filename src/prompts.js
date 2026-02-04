@@ -13,7 +13,14 @@ Analyze the provided codebase for the following critical issues. Be extremely th
 5. **Logic Bugs**: obvious runtime errors?
 6. **Edge Cases**: What happens if inputs are null, empty, or malformed?
 7. **Documentation**: Does the code explain itself? Are there comments? ("reading docs matters")
-8. **Testing Strategy**: Are there existing tests? Is the system built incrementally? ("test and incrementally build systems")
+8. **Testing Strategy & Infrastructure**: 
+    - **Automated Testing**: Are there unit tests, integration tests, E2E tests? Is there regression testing?
+    - **Testing Environment**: Is there a sandbox/staging environment? Test user accounts?
+    - **Platform Coverage**: Multi-platform testing (web, mobile)? Cross-browser? Multi-OS?
+    - **Specialized Testing**: Chaos/fault injection? API testing? Manual exploratory testing?
+    - **Test Pyramid**: Is there a proper test pyramid (more unit tests, fewer manual tests)?
+    - **CI/CD Integration**: Are tests automated in the pipeline? Parallel test execution?
+    - **Test Aspects**: Do tests describe "why" and "what" before "how"?
 
 Return the report in the following Markdown format:
 - Start with a strict "Grade" (A-F).

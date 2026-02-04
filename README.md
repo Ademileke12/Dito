@@ -61,10 +61,13 @@ Dito reads your entire project, understands the context, and hunts for issues th
   - Spaghetti code
   - Poor variable naming
   - Missing documentation
-- 🧪 **Testing Strategy**
-  - Missing tests
-  - Edge case handling
-  - Incremental build practices
+- 🧪 **Testing Strategy & Infrastructure**
+  - Missing unit/integration/E2E tests
+  - Lack of sandbox/staging environments
+  - No CI/CD automation
+  - Missing chaos/fault injection testing
+  - Cross-platform/browser coverage gaps
+  - Test pyramid violations
 - 🛡️ **Operational Maturity**
   - Error logging
   - Stack trace exposure
