@@ -235,12 +235,19 @@ Act as a Senior Security Engineer. Rewrite the following code to use parameteriz
 ```
 
 ### 3. `dito_generated_tests.js`
-Executable attack vector tests:
+Executable attack vector tests designed to exploit the specific vulnerabilities found in your project.
 
-```javascript
-// Tests SQL injection, XSS, DoS, etc.
-// Usage: node dito_generated_tests.js
-```
+**How to run them:**
+1.  **Start your application** (the one Dito analyzed) so it's running locally (usually on port 3000).
+2.  **Open a new terminal** in the directory where the tests were generated.
+3.  **Run the test suite**:
+    ```bash
+    node dito_generated_tests.js
+    ```
+
+> [!TIP]
+> If your server is running on a different port, you can usually specify it via an environment variable if the AI included one:
+> `BASE_URL=http://localhost:8080 node dito_generated_tests.js`
 
 ---
 
