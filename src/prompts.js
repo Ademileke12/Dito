@@ -32,7 +32,7 @@ Return the report in the following Markdown format:
 
 const TEST_GENERATION_PROMPT = `
 Based on the codebase provided, generate a comprehensive test suite.
-Create a strict "Attack Vector" test plan.
+Create a strict 'Attack Vector' test plan.
 
 Generate specific inputs/scripts to test:
 - SQL Injection attempts on all endpoints.
@@ -41,10 +41,12 @@ Generate specific inputs/scripts to test:
 - Malformed JSON/Headers.
 
 **Output Format**:
-Return valid Javascript code (using standard fetch or axios) that acts as a test script. 
-The code should be ready to run as a standalone "test-runner.js".
-It should log "PASS" or "FAIL" for each test case.
+Return valid Javascript code (using the native global fetch API) that acts as a test script. 
+Ensure the script is self-contained and has **no external dependencies** (no node-fetch, no axios).
+The code should be ready to run as a standalone 'dito_generated_tests.js' with 'node dito_generated_tests.js'.
+It should log 'PASS' or 'FAIL' for each test case.
 Wait 1s between requests to avoid self-DoS if rate limiting is missing.
+Use a base URL like 'const BASE_URL = process.env.BASE_URL || "http://localhost:3000";'.
 `;
 
 module.exports = { ANALYSIS_PROMPT, TEST_GENERATION_PROMPT };
