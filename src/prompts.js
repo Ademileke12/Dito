@@ -34,11 +34,19 @@ const TEST_GENERATION_PROMPT = `
 Based on the codebase provided, generate a comprehensive test suite.
 Create a strict 'Attack Vector' test plan.
 
-Generate specific inputs/scripts to test:
-- SQL Injection attempts on all endpoints.
-- XSS payloads for input fields.
-- Large payloads (DoS/Overflow).
-- Malformed JSON/Headers.
+**CRITICAL**: Search the codebase for **actual URL endpoints**, API routes (like /api/*), or front-end fetch/axios calls. Use these real URLs for your tests. 
+- If you find no local API routes (e.g. Next.js pages but no pages/api), **do not guess**. Instead, target the main page routes (/) and look for input forms in the JSX/HTML to attack.
+- Clearly comment at the top of the test script whether endpoints were found or if you are targeting front-end routes.
+
+Generate specific inputs/scripts to test realistically:
+- SQL Injection attempts on identified endpoints or form fields.
+- XSS payloads for any input fields/URL params found in the code.
+- Large payloads for identified POST routes or file uploads.
+- Malformed JSON/Headers for identified API routes.
+
+**Test Logic**:
+- A test should **PASS** if the server handles the attack gracefully (returns a 4xx error or a clean error message).
+- A test should **FAIL** if the server crashes (ECONNREFUSED/500) or reflects an XSS payload raw in the response.
 
 **Output Format**:
 Return valid Javascript code (using the native global fetch API) that acts as a test script. 
