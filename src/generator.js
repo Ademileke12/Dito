@@ -22,16 +22,27 @@ async function generateOutput(aiResponse, targetDir) {
     console.log(chalk.green(`✓ Report generated: ${reportPath}`));
 
     // 2. Extract Test Code
-    // Regex to find javascript code blocks that look like the test suite
-    const codeBlockRegex = /```javascript([\s\S]*?)```/g;
-    let match;
-    let testCode = '';
+    // We prefer the custom DITO delimiters for perfect extraction.
+    const delimiterRegex = /---BEGIN DITO TESTS---([\s\S]*?)---END DITO TESTS---/;
+    const delimiterMatch = aiResponse.match(delimiterRegex);
 
-    // Find the last code block or a reliable one that looks like the test suite?
-    // Our prompt asks for "standalone test-runner.js", so we look for that.
-    while ((match = codeBlockRegex.exec(aiResponse)) !== null) {
-        if (match[1].includes('axios') || match[1].includes('fetch') || match[1].includes('require')) {
-            testCode = match[1].trim();
+    if (delimiterMatch) {
+        testCode = delimiterMatch[1].trim();
+        // Remove potential markdown code block markers if the AI accidentally included them inside delimiters
+        testCode = testCode.replace(/^```javascript\n?/, '').replace(/\n?```$/, '').trim();
+
+        // Safety Clean: Remove any LLM-induced require('fetch') or node-fetch lines
+        testCode = testCode.replace(/^.*require\(['"](node-)?fetch['"]\).*$/gm, '');
+        testCode = testCode.replace(/^.*import .* from ['"](node-)?fetch['"].*$/gm, '');
+        testCode = testCode.trim();
+    } else {
+        // Fallback to markdown extraction if delimiters are missing (V1 compatibility)
+        const codeBlockRegex = /```javascript([\s\S]*?)```/g;
+        let match;
+        while ((match = codeBlockRegex.exec(aiResponse)) !== null) {
+            if (match[1].includes('fetch') || match[1].includes('require')) {
+                testCode = match[1].trim();
+            }
         }
     }
 

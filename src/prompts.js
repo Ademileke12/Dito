@@ -57,12 +57,22 @@ Generate specific inputs/scripts to test realistically:
 - A test should **FAIL** if the server crashes (ECONNREFUSED/500), reflects an XSS payload raw, reveals secrets, or leaks stack traces.
 
 **Output Format**:
-Return valid Javascript code (using the native global fetch API) that acts as a test script. 
-Ensure the script is self-contained and has **no external dependencies** (no node-fetch, no axios).
-The code should be ready to run as a standalone 'dito_generated_tests.js' with 'node dito_generated_tests.js'.
-It should log 'PASS' or 'FAIL' for each test case.
-Wait 1s between requests (unless specifically testing rate limiting) to avoid self-DoS.
-Use a base URL like 'const BASE_URL = process.env.BASE_URL || "http://localhost:3000";'.
+You MUST return the test script wrapped in a unique delimiter. 
+Everything between "---BEGIN DITO TESTS---" and "---END DITO TESTS---" must be valid, standalone Javascript.
+
+**Rules for Test Code**:
+- Use the **GLOBAL native fetch API** only.
+- **DO NOT** use 'require("node-fetch")', 'require("fetch")', or any 'import' statement.
+- **DO NOT** add any headers or setups for fetch libraries. Assume it is available globally.
+- **NEVER** use Jest/Mocha globals like 'test()', 'expect()', or 'describe()'.
+- The script must be self-contained and run with 'node dito_generated_tests.js'.
+- Use 'console.log("PASS: ...")' or 'console.log("FAIL: ...")'.
+- Wait 1s between requests (unless specifically testing rate limiting).
+- Use a base URL like 'const BASE_URL = process.env.BASE_URL || "http://localhost:3000";'.
+
+---BEGIN DITO TESTS---
+// Start your standalone script here
+---END DITO TESTS---
 `;
 
 module.exports = { ANALYSIS_PROMPT, TEST_GENERATION_PROMPT };

@@ -35,7 +35,7 @@ async function analyzeWithGrok(files, prompt) {
     }
 
     // Construct context with total length management
-    const MAX_CHAR_LIMIT = 200000; // ~50k-100k tokens, safe for most Groq models
+    const MAX_CHAR_LIMIT = 30000; // ~6k-8k tokens, safe for Groq Free Tier (12k limit)
     let context = "Here is the codebase summary and key file contents:\n\n";
 
     // First, list all files found
