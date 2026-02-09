@@ -23,7 +23,7 @@ console.log(
 
 program
     .name('dito')
-    .description('AI-powered vibe coding auditor and test generator (Powered by DeepSeek)')
+    .description('AI-powered vibe coding auditor and test generator (Powered by Groq)')
     .version('2.0.0');
 
 // Login command removed. API key is now embedded.
@@ -56,7 +56,7 @@ program
             spinner.succeed(`Found ${files.length} files.`);
 
             // 2. Analyze with AI
-            spinner.start('Consulting OpenAI GPT-5 (via Xroute)...');
+            spinner.start('Consulting Groq AI (Llama 3)...');
 
             let fullPrompt = `${ANALYSIS_PROMPT}\n\n${TEST_GENERATION_PROMPT}`;
             if (config.strictness === 'chill') {
@@ -87,8 +87,11 @@ program
             spinner.fail('An error occurred.');
             console.error(chalk.red(error.message));
             // Helpful hint if it's the specific API error
+            if (error.message.includes('401')) {
+                console.log(chalk.yellow('ℹ️  Unauthorized. Please check your Groq API key.'));
+            }
             if (error.message.includes('503') || error.message.includes('500')) {
-                console.log(chalk.yellow('ℹ️  The Xroute API seems to be experiencing issues. Try again later or use MOCK_AI=true.'));
+                console.log(chalk.yellow('ℹ️  The Groq API seems to be experiencing issues. Try again later or use MOCK_AI=true.'));
             }
         }
     });

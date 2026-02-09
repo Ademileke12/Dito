@@ -5,7 +5,7 @@
 **The AI-Powered "Vibe Coding" Auditor**
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![Powered By](https://img.shields.io/badge/Powered%20By-OpenAI%20GPT--5-green)](https://openai.com)
+[![Powered By](https://img.shields.io/badge/Powered%20By-Groq%20AI-orange)](https://groq.com)
 [![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen)]()
 
 </div>
@@ -157,7 +157,7 @@ dito analyze ./my-express-app
 
 **What happens:**
 1. 🔍 Crawls all files (respects `.gitignore`)
-2. 🤖 Sends code to OpenAI GPT-5 for deep analysis
+2. 🤖 Sends code to Groq AI (Llama 3) for deep analysis
 3. 📊 Generates a graded report (A-F)
 4. 🛠️ Creates fix prompts
 5. 🧪 Generates attack vector tests
@@ -346,7 +346,7 @@ sudo chmod +x /path/to/Dito/bin/dito.js
 
 ### Issue: API timeout errors
 
-**Cause:** Xroute API is slow/down
+**Cause:** Groq API is slow/down
 
 **Solution:**
 Use Mock mode:

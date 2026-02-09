@@ -3,7 +3,7 @@ const chalk = require('chalk');
 
 // Obfuscated Key to prevent casual editing
 const SECRET = 'dito-secure-squad';
-const ENCRYPTED_KEY = 'U15EW05HVVZARAcUR0FFWF1VXEVbTBJTUEZHVEgXR0A=';
+const ENCRYPTED_KEY = 'AxofMFwmLRlHRlBpKwgkBwYjXEVYRgMBNDIWHE9ANywrJyA6IThaNxIQBBc9QRYyFjYWLjwcJE8=';
 
 function getApiKey() {
     try {
@@ -20,10 +20,10 @@ function getApiKey() {
 }
 
 const API_KEY = getApiKey();
-const API_URL = 'https://api.xroute.ai/openai/v1/chat/completions';
+const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 /**
- * Sends the project context to OpenAI GPT-5 via Xroute
+ * Sends the project context to Groq AI
  * @param {Array<{path: string, content: string}>} files - The project files
  * @param {string} prompt - The specific analysis prompt
  * @returns {Promise<string>} - The AI's response
@@ -31,7 +31,7 @@ const API_URL = 'https://api.xroute.ai/openai/v1/chat/completions';
 async function analyzeWithGrok(files, prompt) {
     if (process.env.MOCK_AI) {
         console.log(chalk.yellow("⚠️  Using MOCK AI Response"));
-        return `# MOCK GPT-5 Report\n\n## Grade: F\n\nCritical Issue: SQL Injection detected.`;
+        return `# MOCK Groq Report\n\n## Grade: F\n\nCritical Issue: SQL Injection detected.`;
     }
 
     // Construct context
@@ -53,9 +53,9 @@ async function analyzeWithGrok(files, prompt) {
 
     try {
         const response = await axios.post(API_URL, {
-            model: 'gpt-5',
+            model: 'llama-3.3-70b-versatile',
             messages: messages,
-            stream: false // Keeping stream false for simpler CLI handling
+            stream: false
         }, {
             headers: {
                 'Authorization': `Bearer ${API_KEY}`,
@@ -64,7 +64,6 @@ async function analyzeWithGrok(files, prompt) {
         });
 
         if (!response.data.choices || !response.data.choices.length) {
-            // Check for specific Xroute error formats
             if (response.data.error) {
                 throw new Error(`API Error: ${JSON.stringify(response.data.error)}`);
             }
@@ -75,9 +74,8 @@ async function analyzeWithGrok(files, prompt) {
 
     } catch (error) {
         if (error.response) {
-            // Log more details for debugging
             console.error(chalk.red("\nAPI Error Details:"), JSON.stringify(error.response.data, null, 2));
-            throw new Error(`Grok API Error: ${error.response.status}`);
+            throw new Error(`Groq API Error: ${error.response.status}`);
         } else {
             throw error;
         }
