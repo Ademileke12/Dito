@@ -34,10 +34,35 @@ async function analyzeWithGrok(files, prompt) {
         return `# MOCK Groq Report\n\n## Grade: F\n\nCritical Issue: SQL Injection detected.`;
     }
 
-    // Construct context
-    let context = "Here is the codebase:\n\n";
+    // Construct context with total length management
+    const MAX_CHAR_LIMIT = 200000; // ~50k-100k tokens, safe for most Groq models
+    let context = "Here is the codebase summary and key file contents:\n\n";
+
+    // First, list all files found
+    context += `Total Files in project: ${files.length}\nFiles: ${files.map(f => f.path).join(', ')}\n\n`;
+
+    let currentLength = context.length;
     for (const file of files) {
-        context += `File: ${file.path}\n\`\`\`\n${file.content}\n\`\`\`\n\n`;
+        const fileHeader = `File: ${file.path}\n\`\`\`\n`;
+        const fileFooter = `\n\`\`\`\n\n`;
+
+        // If file is too large for remaining space, truncate it or skip
+        let fileContent = file.content;
+        if (currentLength + fileHeader.length + fileFooter.length + 100 > MAX_CHAR_LIMIT) {
+            context += `... (Other files omitted due to size limits) ...\n`;
+            break;
+        }
+
+        if (currentLength + fileHeader.length + fileContent.length + fileFooter.length > MAX_CHAR_LIMIT) {
+            const remainingSpace = MAX_CHAR_LIMIT - currentLength - fileHeader.length - fileFooter.length - 50;
+            fileContent = fileContent.substring(0, remainingSpace) + "\n... (File truncated due to size limits) ...";
+        }
+
+        const fileBlock = fileHeader + fileContent + fileFooter;
+        context += fileBlock;
+        currentLength += fileBlock.length;
+
+        if (currentLength >= MAX_CHAR_LIMIT) break;
     }
 
     const messages = [
