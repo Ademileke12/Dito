@@ -14,19 +14,26 @@ function generateFixPrompts(reportContent, targetDir) {
     // Ideally, we'd parse the structured output better, but regex will do for V2.
 
     let issues = [];
-    const criticalRegex = /Critical Issues[\s\S]*?(?=##|$)/i;
+    const criticalRegex = /Critical Issues[\s\S]*?(?=(##|###|\*\*Improvements:|$))/i;
     const match = reportContent.match(criticalRegex);
 
     if (match) {
-        const lines = match[0].split('\n');
-        lines.forEach(line => {
-            // Look for list items: "1. **Issue Name**: Description"
-            const itemMatch = line.match(/^\d+\.\s+\*\*(.*?)\*\*:(.*)/);
-            if (itemMatch) {
-                issues.push({
-                    title: itemMatch[1].trim(),
-                    description: itemMatch[2].trim()
-                });
+        const criticalSection = match[0];
+        // Match numbered items: 1. **Title**
+        const items = criticalSection.split(/\n\s*\d+\.\s+/);
+
+        items.forEach(item => {
+            const boldMatch = item.match(/\*\*(.*?)\*\*(?::)?\s*([\s\S]*)/);
+            if (boldMatch) {
+                const title = boldMatch[1].trim();
+                let description = boldMatch[2].trim();
+
+                // Clean up description if it starts with a newline and bullet points
+                description = description.replace(/^[\s\S]*?\n\s*\*?\s*/, '').split('\n')[0].trim();
+
+                if (title && description) {
+                    issues.push({ title, description });
+                }
             }
         });
     }
