@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeXero Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "brand-dark": "#0A0A0A",
+              "brand-light": "#F8F9FA",
+              "brand-orange": "#FF5722",
+              "brand-charcoal": "#1F2937"
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui"],
+              mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular"]
+            }
+          }
+        }
+      };
+    </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19",
+          "react-dom/client": "https://esm.sh/react-dom@19/client",
+          "lucide-react": "https://esm.sh/lucide-react@0.457.0?deps=react@19",
+          "clsx": "https://esm.sh/clsx@2.1.1",
+          "tailwind-merge": "https://esm.sh/tailwind-merge@2.5.2"
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-brand-dark font-sans text-white">
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>
