@@ -5,10 +5,10 @@
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["security", "audit", "code-analysis", "ai", "testing", "performance", "code-quality"],
+  "author": "Ademileke (@Ademileke12)",
   "license": "ISC",
-  "description": "",
+  "description": "AI-powered vibe coding auditor with specialized analysis modes for security, performance, testing, and code quality",
   "dependencies": {
     "axios": "^1.13.4",
     "body-parser": "^2.2.2",

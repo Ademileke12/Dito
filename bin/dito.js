@@ -21,7 +21,7 @@ program
     .description('AI-powered vibe coding auditor and test generator (Powered by Groq)')
     .version('1.0.0');
 
-// Login command removed. API key is now embedded.
+
 
 program
     .command('analyze <directory>')
@@ -149,26 +149,31 @@ async function showMainMenu() {
             name: 'action',
             message: chalk.green('What would you like to do?') + chalk.gray(' (Use arrow keys)'),
             choices: [
-                new inquirer.Separator(chalk.cyan('--- Commands ---')),
-                { name: '🔍 Search & analyze project', value: 'analyze' },
-                { name: '📦 Analyze specific directory', value: 'analyze-dir' },
-                { name: '🗑️  Delete generated reports', value: 'delete' },
+                new inquirer.Separator(chalk.cyan('--- Analysis Commands ---')),
+                { name: '🔍 Full Project Analysis', value: 'analyze' },
+                { name: '🛡️  Security Audit Only', value: 'security-audit' },
+                { name: '⚡ Performance Check', value: 'performance' },
+                { name: '🧪 Testing Coverage Analysis', value: 'testing' },
+                { name: '📊 Code Quality Review', value: 'quality' },
+                { name: '🐛 Debug Specific File', value: 'debug' },
                 
                 new inquirer.Separator(chalk.cyan('--- Configuration ---')),
-                { name: '⚙️  DITO.md Management', value: 'config' },
-                { name: '📁 Project Initialization', value: 'init' },
-                { name: '🔒 Permissions & Security', value: 'security' },
+                { name: '📁 Initialize Dito Config', value: 'init' },
+                { name: '⚙️  Adjust Strictness Level', value: 'strictness' },
+                { name: '🚫 Manage Ignore Patterns', value: 'ignore' },
+                { name: '📋 View Current Settings', value: 'view-config' },
                 
-                new inquirer.Separator(chalk.cyan('--- Advanced ---')),
+                new inquirer.Separator(chalk.cyan('--- Utilities ---')),
+                { name: '📄 View Generated Reports', value: 'view-reports' },
+                { name: '🗑️  Delete All Reports', value: 'delete' },
+                { name: '⚡ Available CLI Commands', value: 'commands' },
                 { name: '☁️  MCP Servers', value: 'mcp' },
-                { name: '⚡ Commands', value: 'commands' },
-                { name: '⚙️  Settings', value: 'settings' },
                 
                 new inquirer.Separator(chalk.cyan('--- Help ---')),
                 { name: '❓ Help & Documentation', value: 'help' },
                 { name: '👋 Exit', value: 'exit' }
             ],
-            pageSize: 20
+            pageSize: 23
         }
     ]);
 
@@ -176,34 +181,50 @@ async function showMainMenu() {
 }
 
 // Handle menu actions
+// Handle menu actions
 async function handleAction(action) {
     switch (action) {
         case 'analyze':
             await handleAnalyze();
             break;
-        case 'analyze-dir':
-            await handleAnalyzeDirectory();
+        case 'security-audit':
+            await handleSecurityAudit();
             break;
-        case 'delete':
-            await handleDelete();
+        case 'performance':
+            await handlePerformanceCheck();
             break;
-        case 'config':
-            await handleConfig();
+        case 'testing':
+            await handleTestingAnalysis();
+            break;
+        case 'quality':
+            await handleQualityReview();
+            break;
+        case 'debug':
+            await handleDebug();
             break;
         case 'init':
             await handleInit();
             break;
-        case 'security':
-            await handleSecurity();
+        case 'strictness':
+            await handleStrictnessSettings();
             break;
-        case 'mcp':
-            await handleMCP();
+        case 'ignore':
+            await handleIgnorePatterns();
+            break;
+        case 'view-config':
+            await handleViewConfig();
+            break;
+        case 'view-reports':
+            await handleViewReports();
+            break;
+        case 'delete':
+            await handleDelete();
             break;
         case 'commands':
             await handleCommands();
             break;
-        case 'settings':
-            await handleSettings();
+        case 'mcp':
+            await handleMCP();
             break;
         case 'help':
             await handleHelp();
@@ -215,6 +236,8 @@ async function handleAction(action) {
 }
 
 // Action handlers
+
+// Action handlers
 async function handleAnalyze() {
     const { dir } = await inquirer.prompt([{
         type: 'input',
@@ -223,20 +246,725 @@ async function handleAnalyze() {
         default: './'
     }]);
     
-    await program.parseAsync(['node', 'dito', 'analyze', dir]);
+    console.log(chalk.cyan('\n🔮 Running Full Analysis...\n'));
+    console.log(chalk.gray('Checking: Security, Performance, Code Quality, Testing, Logic Bugs\n'));
+    
+    await runAnalysis(dir, 'full');
     await returnToMenu();
 }
 
-async function handleAnalyzeDirectory() {
+async function handleSecurityAudit() {
     const { dir } = await inquirer.prompt([{
         type: 'input',
         name: 'dir',
-        message: 'Enter specific directory to analyze:',
+        message: 'Enter project directory path:',
         default: './'
     }]);
     
-    await program.parseAsync(['node', 'dito', 'analyze', dir]);
+    console.log(chalk.cyan('\n🛡️  Running Security Audit...\n'));
+    console.log(chalk.gray('Checking: SQL Injection, XSS, CSRF, Secret Leaks, Auth Issues\n'));
+    
+    await runAnalysis(dir, 'security');
     await returnToMenu();
+}
+
+async function handlePerformanceCheck() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n⚡ Running Performance Analysis...\n'));
+    console.log(chalk.gray('Checking: Memory Leaks, N+1 Queries, Loop Inefficiencies, Bundle Size\n'));
+    
+    await runAnalysis(dir, 'performance');
+    await returnToMenu();
+}
+
+async function handleTestingAnalysis() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n🧪 Running Testing Coverage Analysis...\n'));
+    console.log(chalk.gray('Checking: Unit Tests, Integration Tests, E2E Tests, Test Pyramid\n'));
+    
+    await runAnalysis(dir, 'testing');
+    await returnToMenu();
+}
+
+async function handleQualityReview() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n📊 Running Code Quality Review...\n'));
+    console.log(chalk.gray('Checking: Code Structure, Naming, Documentation, Best Practices\n'));
+    
+    await runAnalysis(dir, 'quality');
+    await returnToMenu();
+}
+
+async function handleDebug() {
+    const { file } = await inquirer.prompt([{
+        type: 'input',
+        name: 'file',
+        message: 'Enter file path to debug:',
+    }]);
+    
+    const { error } = await inquirer.prompt([{
+        type: 'input',
+        name: 'error',
+        message: 'Describe the bug (optional):',
+    }]);
+
+    await program.parseAsync(['node', 'dito', 'debug', file, error || '']);
+    await returnToMenu();
+}
+
+// Core analysis function with specialized modes
+async function runAnalysis(directory, mode = 'full') {
+    const targetDir = path.resolve(directory);
+    const config = loadConfig(targetDir);
+    const spinner = ora('Crawling project files...').start();
+
+    try {
+        const files = await crawlProject(targetDir);
+        if (files.length === 0) {
+            spinner.fail('No matching files found to analyze.');
+            return;
+        }
+        spinner.succeed(`Found ${files.length} files.`);
+
+        spinner.start('Consulting Groq AI (Llama 3)...');
+
+        // Build specialized prompt based on mode
+        let customPrompt = getPromptForMode(mode);
+        
+        if (config.strictness === 'chill') {
+            customPrompt += "\n\n(Note: Be lenient with the grading. This is a hackathon project.)";
+        } else if (config.strictness === 'strict') {
+            customPrompt += "\n\n(Note: Be extremely strict. This is mission-critical enterprise code.)";
+        }
+
+        const aiResponse = await analyzeWithGrok(files, customPrompt);
+        spinner.succeed('Analysis complete!');
+
+        // Generate output with mode-specific naming
+        const reportName = mode === 'full' ? 'dito-report.md' : `dito-${mode}-report.md`;
+        const reportPath = path.join(targetDir, reportName);
+        const fs = require('fs');
+        fs.writeFileSync(reportPath, aiResponse);
+        
+        console.log(chalk.green(`\n✓ Report generated: ${reportName}`));
+
+        // Generate fix prompts
+        generateFixPrompts(aiResponse, targetDir);
+
+        // Generate tests only for security and full analysis
+        if (mode === 'security' || mode === 'full') {
+            const testMatch = aiResponse.match(/---BEGIN DITO TESTS---([\s\S]*?)---END DITO TESTS---/);
+            if (testMatch) {
+                const testPath = path.join(targetDir, 'dito_generated_tests.js');
+                fs.writeFileSync(testPath, testMatch[1].trim());
+                console.log(chalk.green(`✓ Test Suite generated: dito_generated_tests.js`));
+            }
+        }
+
+        console.log('\n' + boxen(
+            chalk.bold.magenta('✨ Dito Analysis Complete! ✨') +
+            '\n\n' +
+            chalk.white('📄 Report: ') + chalk.underline(reportName) + '\n' +
+            chalk.white('🛠️  Fixes:  ') + chalk.underline('dito-fixes.md'),
+            { padding: 1, borderColor: 'green', borderStyle: 'round' }
+        ));
+
+    } catch (error) {
+        spinner.fail('An error occurred.');
+        console.error(chalk.red(error.message));
+    }
+}
+
+// Get specialized prompts for different analysis modes
+function getPromptForMode(mode) {
+    const { ANALYSIS_PROMPT, TEST_GENERATION_PROMPT } = require('../src/prompts');
+    
+    switch (mode) {
+        case 'security':
+            return `
+Focus ONLY on Security Vulnerabilities in the provided codebase:
+
+1. **Injection Attacks**: SQL Injection, NoSQL Injection, Command Injection, XSS
+2. **Authentication & Authorization**: Weak passwords, missing auth, broken access control
+3. **CSRF Protection**: Are state-changing operations protected?
+4. **Secret Management**: Hardcoded API keys, tokens, passwords, database credentials
+5. **Data Exposure**: PII leaks, sensitive data in logs, exposed stack traces
+6. **File Upload Security**: Unrestricted file types, missing validation
+7. **Rate Limiting**: Protection against brute-force and DoS attacks
+8. **Cryptography**: Weak encryption, insecure random number generation
+
+Return a detailed security report with:
+- Security Grade (A-F)
+- Critical vulnerabilities with severity (Critical/High/Medium/Low)
+- Exploit scenarios for each vulnerability
+- Specific code fixes with secure alternatives
+
+${TEST_GENERATION_PROMPT}
+`;
+
+        case 'performance':
+            return `
+Focus ONLY on Performance Issues in the provided codebase:
+
+1. **Memory Management**: Memory leaks, excessive memory usage, garbage collection issues
+2. **Database Queries**: N+1 queries, missing indexes, inefficient queries
+3. **Loop Optimization**: Nested loops, unnecessary iterations, blocking operations
+4. **Async/Await**: Blocking async calls, missing parallelization opportunities
+5. **Bundle Size**: Large dependencies, unused imports, code splitting opportunities
+6. **Caching**: Missing cache strategies, inefficient cache invalidation
+7. **API Calls**: Redundant requests, missing request batching
+8. **Rendering**: Unnecessary re-renders, missing memoization
+
+Return a performance report with:
+- Performance Grade (A-F)
+- Specific bottlenecks with estimated impact
+- Optimization recommendations with code examples
+- Expected performance improvements
+`;
+
+        case 'testing':
+            return `
+Focus ONLY on Testing Strategy & Coverage in the provided codebase:
+
+1. **Test Coverage**: Unit tests, integration tests, E2E tests presence
+2. **Test Quality**: Test assertions, edge cases, error scenarios
+3. **Test Pyramid**: Proper distribution of test types
+4. **Testing Infrastructure**: CI/CD integration, test environments, test data management
+5. **Specialized Testing**: API testing, security testing, performance testing
+6. **Test Maintainability**: Test organization, naming, documentation
+7. **Mocking & Stubbing**: Proper use of test doubles
+8. **Platform Coverage**: Cross-browser, multi-device, multi-OS testing
+
+Return a testing report with:
+- Testing Grade (A-F)
+- Coverage gaps with priority
+- Missing test types
+- Recommended test cases to add
+- Testing infrastructure improvements
+`;
+
+        case 'quality':
+            return `
+Focus ONLY on Code Quality in the provided codebase:
+
+1. **Code Structure**: File organization, separation of concerns, modularity
+2. **Naming Conventions**: Variable, function, class naming clarity
+3. **Documentation**: Comments, JSDoc, README completeness
+4. **Code Duplication**: DRY violations, repeated logic
+5. **Complexity**: Cyclomatic complexity, deeply nested code
+6. **Error Handling**: Consistent error handling, proper error messages
+7. **Type Safety**: TypeScript usage, type annotations, type checking
+8. **Best Practices**: Framework-specific patterns, industry standards
+9. **Maintainability**: Code readability, refactoring opportunities
+
+Return a code quality report with:
+- Quality Grade (A-F)
+- Specific quality issues with examples
+- Refactoring recommendations
+- Best practice violations
+`;
+
+        default: // full
+            return `${ANALYSIS_PROMPT}\n\n${TEST_GENERATION_PROMPT}`;
+    }
+}
+
+async function handleDelete() {
+    const fs = require('fs');
+    const files = ['dito-report.md', 'dito-fixes.md', 'dito_generated_tests.js'];
+    
+    console.log(chalk.yellow('\n🗑️  Deleting generated reports...\n'));
+    
+    files.forEach(file => {
+        if (fs.existsSync(file)) {
+            fs.unlinkSync(file);
+            console.log(chalk.green(`✓ Deleted ${file}`));
+        } else {
+            console.log(chalk.gray(`- ${file} not found`));
+        }
+    });
+    
+    await returnToMenu();
+}
+
+async function handleConfig() {
+    console.log(chalk.cyan('\n⚙️  Configuration Management\n'));
+    console.log('Create or edit .ditorc.json to customize Dito behavior.');
+    console.log(chalk.gray('Example: { "strictness": "strict", "ignore": ["node_modules/**"] }\n'));
+    await returnToMenu();
+}
+
+
+async function handleInit() {
+    const fs = require('fs');
+    console.log(chalk.cyan('\n📁 Initializing Dito Configuration...\n'));
+    
+    const { strictness } = await inquirer.prompt([{
+        type: 'list',
+        name: 'strictness',
+        message: 'Select strictness level:',
+        choices: [
+            { name: 'Chill - Lenient for hackathons/prototypes', value: 'chill' },
+            { name: 'Standard - Balanced approach (recommended)', value: 'standard' },
+            { name: 'Strict - Enterprise-grade scrutiny', value: 'strict' }
+        ],
+        default: 'standard'
+    }]);
+    
+    const defaultConfig = {
+        strictness: strictness,
+        ignore: [
+            'node_modules/**',
+            'dist/**',
+            'build/**',
+            '*.min.js',
+            'coverage/**',
+            '.git/**'
+        ]
+    };
+    
+    if (fs.existsSync('.ditorc.json')) {
+        const { overwrite } = await inquirer.prompt([{
+            type: 'confirm',
+            name: 'overwrite',
+            message: '.ditorc.json already exists. Overwrite?',
+            default: false
+        }]);
+        
+        if (!overwrite) {
+            console.log(chalk.yellow('\n⚠ Configuration not changed.'));
+            await returnToMenu();
+            return;
+        }
+    }
+    
+    fs.writeFileSync('.ditorc.json', JSON.stringify(defaultConfig, null, 2));
+    console.log(chalk.green('\n✓ Created .ditorc.json'));
+    console.log(chalk.gray(`Strictness: ${strictness}`));
+    console.log(chalk.gray(`Ignore patterns: ${defaultConfig.ignore.length} patterns\n`));
+    
+    await returnToMenu();
+}
+
+async function handleStrictnessSettings() {
+    const fs = require('fs');
+    console.log(chalk.cyan('\n⚙️  Strictness Level Settings\n'));
+    
+    let config = { strictness: 'standard', ignore: [] };
+    if (fs.existsSync('.ditorc.json')) {
+        config = JSON.parse(fs.readFileSync('.ditorc.json', 'utf8'));
+    }
+    
+    console.log(chalk.gray(`Current: ${config.strictness}\n`));
+    
+    const { strictness } = await inquirer.prompt([{
+        type: 'list',
+        name: 'strictness',
+        message: 'Select new strictness level:',
+        choices: [
+            { name: 'Chill - Lenient for hackathons/prototypes', value: 'chill' },
+            { name: 'Standard - Balanced approach', value: 'standard' },
+            { name: 'Strict - Enterprise-grade scrutiny', value: 'strict' }
+        ],
+        default: config.strictness
+    }]);
+    
+    config.strictness = strictness;
+    fs.writeFileSync('.ditorc.json', JSON.stringify(config, null, 2));
+    console.log(chalk.green(`\n✓ Strictness updated to: ${strictness}\n`));
+    
+    await returnToMenu();
+}
+
+async function handleIgnorePatterns() {
+    const fs = require('fs');
+    console.log(chalk.cyan('\n🚫 Manage Ignore Patterns\n'));
+    
+    let config = { strictness: 'standard', ignore: [] };
+    if (fs.existsSync('.ditorc.json')) {
+        config = JSON.parse(fs.readFileSync('.ditorc.json', 'utf8'));
+    }
+    
+    console.log(chalk.white('Current ignore patterns:'));
+    if (config.ignore.length === 0) {
+        console.log(chalk.gray('  (none)'));
+    } else {
+        config.ignore.forEach(pattern => {
+            console.log(chalk.gray(`  - ${pattern}`));
+        });
+    }
+    console.log('');
+    
+    const { action } = await inquirer.prompt([{
+        type: 'list',
+        name: 'action',
+        message: 'What would you like to do?',
+        choices: [
+            { name: 'Add new pattern', value: 'add' },
+            { name: 'Remove pattern', value: 'remove' },
+            { name: 'Reset to defaults', value: 'reset' },
+            { name: 'Back to menu', value: 'back' }
+        ]
+    }]);
+    
+    if (action === 'back') {
+        await returnToMenu();
+        return;
+    }
+    
+    if (action === 'add') {
+        const { pattern } = await inquirer.prompt([{
+            type: 'input',
+            name: 'pattern',
+            message: 'Enter glob pattern to ignore (e.g., "*.test.js"):',
+        }]);
+        
+        if (pattern) {
+            config.ignore.push(pattern);
+            fs.writeFileSync('.ditorc.json', JSON.stringify(config, null, 2));
+            console.log(chalk.green(`\n✓ Added pattern: ${pattern}\n`));
+        }
+    } else if (action === 'remove' && config.ignore.length > 0) {
+        const { pattern } = await inquirer.prompt([{
+            type: 'list',
+            name: 'pattern',
+            message: 'Select pattern to remove:',
+            choices: config.ignore
+        }]);
+        
+        config.ignore = config.ignore.filter(p => p !== pattern);
+        fs.writeFileSync('.ditorc.json', JSON.stringify(config, null, 2));
+        console.log(chalk.green(`\n✓ Removed pattern: ${pattern}\n`));
+    } else if (action === 'reset') {
+        config.ignore = ['node_modules/**', 'dist/**', 'build/**', '*.min.js', 'coverage/**', '.git/**'];
+        fs.writeFileSync('.ditorc.json', JSON.stringify(config, null, 2));
+        console.log(chalk.green('\n✓ Reset to default patterns\n'));
+    }
+    
+    await returnToMenu();
+}
+
+async function handleViewConfig() {
+    const fs = require('fs');
+    console.log(chalk.cyan('\n📋 Current Dito Configuration\n'));
+    
+    if (!fs.existsSync('.ditorc.json')) {
+        console.log(chalk.yellow('⚠ No .ditorc.json found. Using defaults.'));
+        console.log(chalk.gray('\nDefaults:'));
+        console.log(chalk.gray('  Strictness: standard'));
+        console.log(chalk.gray('  Ignore: node_modules/**, dist/**, *.min.js\n'));
+    } else {
+        const config = JSON.parse(fs.readFileSync('.ditorc.json', 'utf8'));
+        console.log(chalk.white('Strictness: ') + chalk.green(config.strictness));
+        console.log(chalk.white('\nIgnore Patterns:'));
+        config.ignore.forEach(pattern => {
+            console.log(chalk.gray(`  - ${pattern}`));
+        });
+        console.log('');
+    }
+    
+    await returnToMenu();
+}
+
+async function handleViewReports() {
+    const fs = require('fs');
+    const glob = require('glob');
+    
+    console.log(chalk.cyan('\n📄 Generated Reports\n'));
+    
+    const reportFiles = glob.sync('dito-*.md').concat(glob.sync('dito_generated_tests.js'));
+    
+    if (reportFiles.length === 0) {
+        console.log(chalk.gray('No reports found. Run an analysis first.\n'));
+        await returnToMenu();
+        return;
+    }
+    
+    reportFiles.forEach(file => {
+        const stats = fs.statSync(file);
+        const size = (stats.size / 1024).toFixed(2);
+        console.log(chalk.white(`📄 ${file}`) + chalk.gray(` (${size} KB)`));
+    });
+    
+    console.log('');
+    
+    const { viewFile } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'viewFile',
+        message: 'Would you like to view a report?',
+        default: false
+    }]);
+    
+    if (viewFile) {
+        const { file } = await inquirer.prompt([{
+            type: 'list',
+            name: 'file',
+            message: 'Select report to view:',
+            choices: reportFiles
+        }]);
+        
+        const content = fs.readFileSync(file, 'utf8');
+        console.log('\n' + boxen(content.substring(0, 500) + '...', {
+            padding: 1,
+            title: file,
+            borderColor: 'cyan'
+        }));
+        console.log(chalk.gray(`\n(Showing first 500 characters. Open ${file} to view full report)\n`));
+    }
+    
+    await returnToMenu();
+}
+
+async function handleSecurityAudit() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n🛡️  Running Security Audit...\n'));
+    console.log(chalk.gray('Checking: SQL Injection, XSS, CSRF, Secret Leaks, Auth Issues\n'));
+    
+    await runAnalysis(dir, 'security');
+    await returnToMenu();
+}
+
+async function handlePerformanceCheck() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n⚡ Running Performance Analysis...\n'));
+    console.log(chalk.gray('Checking: Memory Leaks, N+1 Queries, Loop Inefficiencies, Bundle Size\n'));
+    
+    await runAnalysis(dir, 'performance');
+    await returnToMenu();
+}
+
+async function handleTestingAnalysis() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n🧪 Running Testing Coverage Analysis...\n'));
+    console.log(chalk.gray('Checking: Unit Tests, Integration Tests, E2E Tests, Test Pyramid\n'));
+    
+    await runAnalysis(dir, 'testing');
+    await returnToMenu();
+}
+
+async function handleQualityReview() {
+    const { dir } = await inquirer.prompt([{
+        type: 'input',
+        name: 'dir',
+        message: 'Enter project directory path:',
+        default: './'
+    }]);
+    
+    console.log(chalk.cyan('\n📊 Running Code Quality Review...\n'));
+    console.log(chalk.gray('Checking: Code Structure, Naming, Documentation, Best Practices\n'));
+    
+    await runAnalysis(dir, 'quality');
+    await returnToMenu();
+}
+
+async function handleDebug() {
+    const { file } = await inquirer.prompt([{
+        type: 'input',
+        name: 'file',
+        message: 'Enter file path to debug:',
+    }]);
+    
+    const { error } = await inquirer.prompt([{
+        type: 'input',
+        name: 'error',
+        message: 'Describe the bug (optional):',
+    }]);
+
+    await program.parseAsync(['node', 'dito', 'debug', file, error || '']);
+    await returnToMenu();
+}
+
+// Core analysis function with specialized modes
+async function runAnalysis(directory, mode = 'full') {
+    const targetDir = path.resolve(directory);
+    const config = loadConfig(targetDir);
+    const spinner = ora('Crawling project files...').start();
+
+    try {
+        const files = await crawlProject(targetDir);
+        if (files.length === 0) {
+            spinner.fail('No matching files found to analyze.');
+            return;
+        }
+        spinner.succeed(`Found ${files.length} files.`);
+
+        spinner.start('Consulting Groq AI (Llama 3)...');
+
+        // Build specialized prompt based on mode
+        let customPrompt = getPromptForMode(mode);
+        
+        if (config.strictness === 'chill') {
+            customPrompt += "\n\n(Note: Be lenient with the grading. This is a hackathon project.)";
+        } else if (config.strictness === 'strict') {
+            customPrompt += "\n\n(Note: Be extremely strict. This is mission-critical enterprise code.)";
+        }
+
+        const aiResponse = await analyzeWithGrok(files, customPrompt);
+        spinner.succeed('Analysis complete!');
+
+        // Generate output with mode-specific naming
+        const reportName = mode === 'full' ? 'dito-report.md' : `dito-${mode}-report.md`;
+        const reportPath = path.join(targetDir, reportName);
+        const fs = require('fs');
+        fs.writeFileSync(reportPath, aiResponse);
+        
+        console.log(chalk.green(`\n✓ Report generated: ${reportName}`));
+
+        // Generate fix prompts
+        generateFixPrompts(aiResponse, targetDir);
+
+        // Generate tests only for security and full analysis
+        if (mode === 'security' || mode === 'full') {
+            const testMatch = aiResponse.match(/---BEGIN DITO TESTS---([\s\S]*?)---END DITO TESTS---/);
+            if (testMatch) {
+                const testPath = path.join(targetDir, 'dito_generated_tests.js');
+                fs.writeFileSync(testPath, testMatch[1].trim());
+                console.log(chalk.green(`✓ Test Suite generated: dito_generated_tests.js`));
+            }
+        }
+
+        console.log('\n' + boxen(
+            chalk.bold.magenta('✨ Dito Analysis Complete! ✨') +
+            '\n\n' +
+            chalk.white('📄 Report: ') + chalk.underline(reportName) + '\n' +
+            chalk.white('🛠️  Fixes:  ') + chalk.underline('dito-fixes.md'),
+            { padding: 1, borderColor: 'green', borderStyle: 'round' }
+        ));
+
+    } catch (error) {
+        spinner.fail('An error occurred.');
+        console.error(chalk.red(error.message));
+    }
+}
+
+// Get specialized prompts for different analysis modes
+function getPromptForMode(mode) {
+    const { ANALYSIS_PROMPT, TEST_GENERATION_PROMPT } = require('../src/prompts');
+    
+    switch (mode) {
+        case 'security':
+            return `
+Focus ONLY on Security Vulnerabilities in the provided codebase:
+
+1. **Injection Attacks**: SQL Injection, NoSQL Injection, Command Injection, XSS
+2. **Authentication & Authorization**: Weak passwords, missing auth, broken access control
+3. **CSRF Protection**: Are state-changing operations protected?
+4. **Secret Management**: Hardcoded API keys, tokens, passwords, database credentials
+5. **Data Exposure**: PII leaks, sensitive data in logs, exposed stack traces
+6. **File Upload Security**: Unrestricted file types, missing validation
+7. **Rate Limiting**: Protection against brute-force and DoS attacks
+8. **Cryptography**: Weak encryption, insecure random number generation
+
+Return a detailed security report with:
+- Security Grade (A-F)
+- Critical vulnerabilities with severity (Critical/High/Medium/Low)
+- Exploit scenarios for each vulnerability
+- Specific code fixes with secure alternatives
+
+${TEST_GENERATION_PROMPT}
+`;
+
+        case 'performance':
+            return `
+Focus ONLY on Performance Issues in the provided codebase:
+
+1. **Memory Management**: Memory leaks, excessive memory usage, garbage collection issues
+2. **Database Queries**: N+1 queries, missing indexes, inefficient queries
+3. **Loop Optimization**: Nested loops, unnecessary iterations, blocking operations
+4. **Async/Await**: Blocking async calls, missing parallelization opportunities
+5. **Bundle Size**: Large dependencies, unused imports, code splitting opportunities
+6. **Caching**: Missing cache strategies, inefficient cache invalidation
+7. **API Calls**: Redundant requests, missing request batching
+8. **Rendering**: Unnecessary re-renders, missing memoization
+
+Return a performance report with:
+- Performance Grade (A-F)
+- Specific bottlenecks with estimated impact
+- Optimization recommendations with code examples
+- Expected performance improvements
+`;
+
+        case 'testing':
+            return `
+Focus ONLY on Testing Strategy & Coverage in the provided codebase:
+
+1. **Test Coverage**: Unit tests, integration tests, E2E tests presence
+2. **Test Quality**: Test assertions, edge cases, error scenarios
+3. **Test Pyramid**: Proper distribution of test types
+4. **Testing Infrastructure**: CI/CD integration, test environments, test data management
+5. **Specialized Testing**: API testing, security testing, performance testing
+6. **Test Maintainability**: Test organization, naming, documentation
+7. **Mocking & Stubbing**: Proper use of test doubles
+8. **Platform Coverage**: Cross-browser, multi-device, multi-OS testing
+
+Return a testing report with:
+- Testing Grade (A-F)
+- Coverage gaps with priority
+- Missing test types
+- Recommended test cases to add
+- Testing infrastructure improvements
+`;
+
+        case 'quality':
+            return `
+Focus ONLY on Code Quality in the provided codebase:
+
+1. **Code Structure**: File organization, separation of concerns, modularity
+2. **Naming Conventions**: Variable, function, class naming clarity
+3. **Documentation**: Comments, JSDoc, README completeness
+4. **Code Duplication**: DRY violations, repeated logic
+5. **Complexity**: Cyclomatic complexity, deeply nested code
+6. **Error Handling**: Consistent error handling, proper error messages
+7. **Type Safety**: TypeScript usage, type annotations, type checking
+8. **Best Practices**: Framework-specific patterns, industry standards
+9. **Maintainability**: Code readability, refactoring opportunities
+
+Return a code quality report with:
+- Quality Grade (A-F)
+- Specific quality issues with examples
+- Refactoring recommendations
+- Best practice violations
+`;
+
+        default: // full
+            return `${ANALYSIS_PROMPT}\n\n${TEST_GENERATION_PROMPT}`;
+    }
 }
 
 async function handleDelete() {

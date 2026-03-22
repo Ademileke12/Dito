@@ -8,3 +8,13 @@ dito-test-project/dito-fixes.md
 *.bak
 tests/test-generator-env/
 coverage/
+
+# Dito generated files
+dito-report.md
+dito-*-report.md
+dito-fixes.md
+dito_generated_tests.js
+.ditorc.json
+
+# Backup files
+*.backup
